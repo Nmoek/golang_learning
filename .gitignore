@@ -1,4 +1,7 @@
 #ignore bin dir
-.bin
+bin
 #ignore pkg dir
-.pkg
+pkg
+
+#ignore all .mod
+*.mod
