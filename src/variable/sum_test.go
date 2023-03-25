@@ -18,10 +18,10 @@ func TestSum(t *testing.T) {
 
 }
 
-func Sum(number [5]int) int {
+func Sum(numbers [5]int) int {
 	var ret int
-	for i := 0; i < 5; i++ {
-		ret += number[i]
+	for _, number := range numbers {
+		ret += number
 	}
 
 	return ret
