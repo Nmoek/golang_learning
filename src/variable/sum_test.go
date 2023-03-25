@@ -6,19 +6,32 @@ import (
 
 func TestSum(t *testing.T) {
 
-	number := [5]int{1, 2, 3, 4, 5}
+	t.Run("this is 5 numbers", func(t *testing.T) {
+		numbers := []int{1, 2, 3, 4, 5}
 
-	got := Sum(number)
-	want := 15
+		got := Sum(numbers)
+		want := 15
 
-	if got != want {
-		// %v是万能输出
-		t.Errorf("sum=%d want=%d given=%v\n", got, want, number)
-	}
+		if got != want {
+			t.Errorf("got=%d want=%d given=%v", got, want, numbers)
+		}
 
+	})
+
+	t.Run("this is any numbers", func(t *testing.T) {
+		numbers := []int{1, 2, 3, 4, 5, 6, 7}
+
+		got := Sum(numbers)
+		want := 28
+
+		if got != want {
+			t.Errorf("got=%d want=%d given=%v", got, want, numbers)
+		}
+
+	})
 }
 
-func Sum(numbers [5]int) int {
+func Sum(numbers []int) int {
 	var ret int
 	for _, number := range numbers {
 		ret += number
