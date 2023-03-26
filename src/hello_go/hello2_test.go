@@ -22,7 +22,7 @@ func TestHello(t *testing.T) {
 
 	/*分组测试1*/
 	t.Run("say hello to all peolpe", func(t *testing.T) {
-		got := Hello("ljk", "zxs")
+		got := Hello("ljk1", "zxs")
 		want := "hello ljk,u wokermate is zxs"
 
 		assertCorrectMsg(t, got, want)
