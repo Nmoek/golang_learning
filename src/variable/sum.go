@@ -1,3 +1,7 @@
+/*
+ * @file:sum.go
+ * @brief: 切片Slice以及数组练习
+ */
 package main
 
 import (
