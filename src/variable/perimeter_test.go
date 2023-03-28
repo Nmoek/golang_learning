@@ -5,6 +5,14 @@ import (
 	"testing"
 )
 
+type A struct {
+	m_var int
+}
+
+func (a A) test_var() int {
+	return a.m_var
+}
+
 /*
  * @brief: 长方形结构体定义
  */
@@ -40,9 +48,9 @@ func (c Circles) Area() float64 {
 func TestArea(t *testing.T) {
 
 	/* 此处解决重命名的方案有两个
-	 * 1.在新的包中重新定Aera(新参数)
-	 * 2. 定义"方法"。方法不等同于函数，函数可以任意时刻任意地方调用
-	 * ;方法必须依赖于一个对象进行调用
+	 * 1.在新的包中重新定Aera(c Circles)
+	 * 2. 定义"方法"。方法不等同于函数，函数可以任意时刻任意地方调用;
+	 *    方法必须依赖于一个对象进行调用
 	 */
 	t.Run("return Rectanle Area", func(t *testing.T) {
 		rect := Rectangle{3.0, 4.0}
@@ -63,6 +71,16 @@ func TestArea(t *testing.T) {
 
 		if got != want {
 			t.Errorf("got=%.2f want=%.2f \n", got, want)
+		}
+	})
+
+	t.Run("return A var", func(t *testing.T) {
+		a := A{1}
+		got := a.test_var()
+		want := 1
+
+		if got != want {
+			t.Errorf("got=%d want=%d \n", got, want)
 		}
 	})
 }
