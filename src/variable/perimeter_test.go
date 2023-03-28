@@ -63,20 +63,24 @@ func TestArea(t *testing.T) {
 
 	//一个匿名结构体
 	areaTests := []struct {
+		name  string
 		shape Shape
 		want  float64
 	}{
-		{shape: Rectangle{3.0, 4.0}, want: 12.0}, //长方形
-		{shape: Circles{1.0}, want: math.Pi},     // 圆形
-		{shape: Triangle{12.0, 6.0}, want: 36.0}, //三角形
+		{name: "Rectangle Test", shape: Rectangle{width: 3.0, length: 4.0}, want: 12.0}, //长方形
+		{name: "Circles Test", shape: Circles{radius: 1.0}, want: math.Pi},              // 圆形
+		{name: "Triangle Test", shape: Triangle{base: 12.0, height: 6.0}, want: 36.0},   //三角形
 	}
 
 	for _, test := range areaTests {
-		got := test.shape.Area()
+		t.Run(test.name, func(t *testing.T) {
+			got := test.shape.Area()
 
-		if got != test.want {
-			t.Errorf("got=%.2f  want=%.2f type=%T \n", got, test.want, test)
-		}
+			if got != test.want {
+				t.Errorf("%#v  got=%.2f  want=%.2f \n", test, got, test.want)
+			}
+		})
+
 	}
 
 }
