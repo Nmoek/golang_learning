@@ -43,6 +43,13 @@ func (c Circles) Area() float64 {
 }
 
 /*
+ * @brief: 形状接口(类似C++的虚函数)
+ */
+type Shape interface {
+	Aera() float64
+}
+
+/*
  * @breif: 测试返回长方形/圆形面积
  */
 func TestArea(t *testing.T) {
@@ -51,27 +58,26 @@ func TestArea(t *testing.T) {
 	 * 1.在新的包中重新定Aera(c Circles)
 	 * 2. 定义"方法"。方法不等同于函数，函数可以任意时刻任意地方调用;
 	 *    方法必须依赖于一个对象进行调用
+	 * 3. 引入"接口", 满足统一逻辑不同对象调用的需求
 	 */
+
+	checkArea := func(t *testing.T, shape Shape, want float64) {
+		t.Helper()
+		got := shape.Area()
+		if got != want {
+			t.Errorf("got=%.2f  want=%.2f \n", got, want)
+		}
+
+	}
+
 	t.Run("return Rectanle Area", func(t *testing.T) {
 		rect := Rectangle{3.0, 4.0}
-		// got := Area(rect)  //重命名点1
-		got := rect.Area()
-		want := 12.0
-
-		if got != want {
-			t.Errorf("got=%.2f want=%.2f \n", got, want)
-		}
+		checkArea(t, rect, 12.0)
 	})
 
 	t.Run("return Circles Area", func(t *testing.T) {
 		cir := Circles{1.0}
-		// got := Area(cir) //重命名点2
-		got := cir.Area()
-		want := math.Pi
-
-		if got != want {
-			t.Errorf("got=%.2f want=%.2f \n", got, want)
-		}
+		checkArea(t, cir, math.Pi)
 	})
 
 	t.Run("return A var", func(t *testing.T) {
