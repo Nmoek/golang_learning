@@ -5,12 +5,11 @@ import (
 	"testing"
 )
 
-type A struct {
-	m_var int
-}
-
-func (a A) test_var() int {
-	return a.m_var
+/*
+ * @brief: 形状接口(类似C++的虚函数)
+ */
+type Shape interface {
+	Area() float64
 }
 
 /*
@@ -43,10 +42,18 @@ func (c Circles) Area() float64 {
 }
 
 /*
- * @brief: 形状接口(类似C++的虚函数)
+ * @brief: 三角形结构体定义
  */
-type Shape interface {
-	Aera() float64
+type Triangle struct {
+	base   float64
+	height float64
+}
+
+/*
+ * @brief: 三角形面积方法
+ */
+func (t Triangle) Area() float64 {
+	return (t.base * t.height) * 0.5
 }
 
 /*
@@ -54,41 +61,24 @@ type Shape interface {
  */
 func TestArea(t *testing.T) {
 
-	/* 此处解决重命名的方案有两个
-	 * 1.在新的包中重新定Aera(c Circles)
-	 * 2. 定义"方法"。方法不等同于函数，函数可以任意时刻任意地方调用;
-	 *    方法必须依赖于一个对象进行调用
-	 * 3. 引入"接口", 满足统一逻辑不同对象调用的需求
-	 */
-
-	checkArea := func(t *testing.T, shape Shape, want float64) {
-		t.Helper()
-		got := shape.Area()
-		if got != want {
-			t.Errorf("got=%.2f  want=%.2f \n", got, want)
-		}
-
+	//一个匿名结构体
+	areaTests := []struct {
+		shape Shape
+		want  float64
+	}{
+		{shape: Rectangle{3.0, 4.0}, want: 12.0}, //长方形
+		{shape: Circles{1.0}, want: math.Pi},     // 圆形
+		{shape: Triangle{12.0, 6.0}, want: 36.0}, //三角形
 	}
 
-	t.Run("return Rectanle Area", func(t *testing.T) {
-		rect := Rectangle{3.0, 4.0}
-		checkArea(t, rect, 12.0)
-	})
+	for _, test := range areaTests {
+		got := test.shape.Area()
 
-	t.Run("return Circles Area", func(t *testing.T) {
-		cir := Circles{1.0}
-		checkArea(t, cir, math.Pi)
-	})
-
-	t.Run("return A var", func(t *testing.T) {
-		a := A{1}
-		got := a.test_var()
-		want := 1
-
-		if got != want {
-			t.Errorf("got=%d want=%d \n", got, want)
+		if got != test.want {
+			t.Errorf("got=%.2f  want=%.2f type=%T \n", got, test.want, test)
 		}
-	})
+	}
+
 }
 
 /*
@@ -112,6 +102,9 @@ func Perimeter(rect Rectangle) float64 {
 	return 2 * (rect.width + rect.length)
 }
 
+/*
+ * @breif: 计算长方形面积
+ */
 func Area(rect Rectangle) float64 {
 	return rect.width * rect.length
 }
