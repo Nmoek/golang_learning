@@ -1,13 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
+// 类型重命名
+type Bitcoin int
+
+// Stringer @brief: 字符串转换接口
+type Stringer interface {
+	String() string
+}
+
 // Wallet @brief: 钱包结构体
 type Wallet struct {
-	money int
+	money Bitcoin
 }
 
 // @func: add
@@ -15,34 +22,56 @@ type Wallet struct {
 // @author: Kewin Li
 // @receiver: Wallet w 某个钱包
 // @param[in]: int32 m 具体金额
-func (w Wallet) add(m int) {
-	fmt.Printf("w.money address=%p\n", &w.money)
+func (w *Wallet) add(m Bitcoin) {
 	//w.money address=0xc000018128
 	w.money += m
 }
 
+// @func: withDraw
+// @brief: 从钱包中取钱
+// @author: Kewin Li
+// @receiver: Wallet w
+// @param: Bitcoin m
+func (w *Wallet) withDraw(m Bitcoin) {
+	w.money -= m
+}
+
 // @func: get
-// @brief: 从钱包中取出钱
+// @brief: 查看钱包中的钱
 // @author: Kewin Li
 // @receiver: Wallet w
 // @return int32
-func (w Wallet) get() int {
+func (w Wallet) get() Bitcoin {
 	return w.money
 }
 
 func TestWallet(t *testing.T) {
 
-	w := Wallet{0}
+	t.Run("存钱", func(t *testing.T) {
+		w := Wallet{}
 
-	w.add(10) //增加10元存款
+		w.add(Bitcoin(10)) //增加10元存款
 
-	fmt.Printf("w.money address=%p\n", &w.money)
-	//w.money address=0xc000018120
-	got := w.get() //取出10元
-	want := 11
+		//w.money address=0xc000018120
+		got := w.get() //查看余额
+		want := Bitcoin(10)
 
-	if got != want {
-		t.Errorf("got=%d want=%d \n", got, want)
-	}
+		if got != want {
+			t.Errorf("got=%d want=%d \n", got, want)
+		}
+	})
+
+	t.Run("取钱", func(t *testing.T) {
+		w := Wallet{Bitcoin(30)}
+
+		w.withDraw(Bitcoin(10)) //取出10元存款
+
+		got := w.get() //查看余额
+		want := Bitcoin(20)
+
+		if got != want {
+			t.Errorf("got=%d want=%d \n", got, want)
+		}
+	})
 
 }
