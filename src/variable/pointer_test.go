@@ -47,18 +47,20 @@ func (w Wallet) get() Bitcoin {
 
 func TestWallet(t *testing.T) {
 
+	errorMsg := func(t *testing.T, w Wallet, want Bitcoin) {
+		t.Helper()
+
+		if w.get() != want {
+			t.Errorf("w.get()=%d  want=%d \n", w.get(), want)
+		}
+	}
+
 	t.Run("存钱", func(t *testing.T) {
 		w := Wallet{}
 
 		w.add(Bitcoin(10)) //增加10元存款
 
-		//w.money address=0xc000018120
-		got := w.get() //查看余额
-		want := Bitcoin(10)
-
-		if got != want {
-			t.Errorf("got=%d want=%d \n", got, want)
-		}
+		errorMsg(t, w, Bitcoin(10))
 	})
 
 	t.Run("取钱", func(t *testing.T) {
@@ -66,12 +68,8 @@ func TestWallet(t *testing.T) {
 
 		w.withDraw(Bitcoin(10)) //取出10元存款
 
-		got := w.get() //查看余额
-		want := Bitcoin(20)
+		errorMsg(t, w, Bitcoin(20))
 
-		if got != want {
-			t.Errorf("got=%d want=%d \n", got, want)
-		}
 	})
 
 }
