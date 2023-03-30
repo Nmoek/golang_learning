@@ -1,7 +1,10 @@
 /*
  * @file:sum.go
- * @brief: 切片Slice以及数组练习
+ * @brief: 数组与切片slice练习
+ * @author: Kewin Li
+ * @date: 2023-03-31
  */
+
 package main
 
 import (
@@ -55,6 +58,7 @@ func Sum(numbers []int) int {
 }
 
 // 带命令参数
+
 func main() {
 
 	//获取命令行参数
@@ -64,7 +68,7 @@ func main() {
 		return
 	}
 
-	fmt.Printf("argv=%v argv type= %T \n", argv, argv)
+	// fmt.Printf("argv=%v argv type= %T \n", argv, argv)
 
 	cmd := argv[1][0]
 	switch cmd {

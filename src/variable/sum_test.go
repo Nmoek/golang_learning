@@ -1,3 +1,9 @@
+/*
+ * @file:sum_test.go
+ * @brief: 数组与切片slice测试学习
+ * @author: Kewin Li
+ * @date: 2023-03-31
+ */
 package main
 
 import (
@@ -40,6 +46,7 @@ func TestSumAllTail(t *testing.T) {
 	}
 
 	//截取尾部切片合并为新切片
+
 	t.Run("Sum All Tail with Slice", func(t *testing.T) {
 		got := SumAllTailwithSlice([]int{1, 2}, []int{0, 9})
 		want := []int{2, 9}
@@ -68,6 +75,12 @@ func TestSumAllTail(t *testing.T) {
 }
 
 // 每个切片的尾部切片合并到同一个切片中
+
+/* @func SumAllTailwithSlice
+ * @date:@brief
+ * @param ...[]int slices
+ * @return []int
+ */
 func SumAllTailwithSlice(slices ...[]int) []int {
 
 	var sums []int

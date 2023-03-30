@@ -1,3 +1,10 @@
+/*
+ * @file: zimu.go
+ * @brief: "接口" 示例
+ * @author: Kewin Li
+ * @date: 2023-03-31
+ */
+
 package main
 
 import (

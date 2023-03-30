@@ -1,5 +1,13 @@
+/**
+ * @file zimu.cpp
+ * @author Kewin Li
+ * @brief 与Go的接口作比对
+ * @date 2023-03-31
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 #include <iostream>
-
 
 using namespace std;
 
