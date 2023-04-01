@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"testing"
 )
 
@@ -32,8 +33,14 @@ func (w *Wallet) add(m Bitcoin) {
 // @author: Kewin Li
 // @receiver: Wallet w
 // @param: Bitcoin m
-func (w *Wallet) withDraw(m Bitcoin) {
+func (w *Wallet) withDraw(m Bitcoin) error {
+
+	if m > w.money {
+		return errors.New("money not enough!!\n")
+	}
+
 	w.money -= m
+	return nil
 }
 
 // @func: get
@@ -55,6 +62,14 @@ func TestWallet(t *testing.T) {
 		}
 	}
 
+	assertErr := func(t *testing.T, err error) {
+		t.Helper()
+
+		if err == nil {
+			t.Errorf("want an error but not get \n")
+		}
+	}
+
 	t.Run("存钱", func(t *testing.T) {
 		w := Wallet{}
 
@@ -69,6 +84,16 @@ func TestWallet(t *testing.T) {
 		w.withDraw(Bitcoin(10)) //取出10元存款
 
 		errorMsg(t, w, Bitcoin(20))
+
+	})
+
+	t.Run("超额透支取钱", func(t *testing.T) {
+		w := Wallet{Bitcoin(20)}
+
+		err := w.withDraw(Bitcoin(100)) //只有10元却要取出30元
+
+		errorMsg(t, w, Bitcoin(20))
+		assertErr(t, err)
 
 	})
 
