@@ -21,6 +21,7 @@ type Wallet struct {
 
 // @func: String
 // @brief: 比特币字符串方法
+// **注意，这里出现了多态行为,String()是fmt包中接口,可以任意"继承拓展"
 // @author: Kewin Li
 // @receiver: Bitcoin b
 // @return string
