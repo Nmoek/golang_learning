@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 )
 
@@ -16,6 +17,15 @@ type Stringer interface {
 // Wallet @brief: 钱包结构体
 type Wallet struct {
 	money Bitcoin
+}
+
+// @func: String
+// @brief: 比特币字符串方法
+// @author: Kewin Li
+// @receiver: Bitcoin b
+// @return string
+func (b Bitcoin) String() string {
+	return fmt.Sprintf("%d BTC", b)
 }
 
 // @func: add
@@ -98,7 +108,7 @@ func TestWallet(t *testing.T) {
 func assertMoney(t *testing.T, w Wallet, want Bitcoin) {
 
 	if w.get() != want {
-		t.Errorf("w.get()=%d  want=%d \n", w.get(), want)
+		t.Errorf("w.get()=%s  want=%s \n", w.get(), want)
 	}
 }
 
