@@ -4,7 +4,7 @@
  * @author: Kewin Li
  * @date: 2023-03-31
  */
-package main
+package sum_test
 
 import (
 	"reflect" //对标深拷贝-->深比较, 不做类型检查单纯字节比较
