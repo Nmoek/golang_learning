@@ -24,7 +24,6 @@ type Wallet struct {
 // @receiver: Wallet w 某个钱包
 // @param[in]: int32 m 具体金额
 func (w *Wallet) add(m Bitcoin) {
-	//w.money address=0xc000018128
 	w.money += m
 }
 
@@ -55,43 +54,27 @@ func (w Wallet) get() Bitcoin {
 	return w.money
 }
 
+// @func: TestWallet
+// @brief: 钱包对象测试
+// @author: Kewin Li
+// @param: *testing.T t
 func TestWallet(t *testing.T) {
-
-	errorMsg := func(t *testing.T, w Wallet, want Bitcoin) {
-		t.Helper()
-
-		if w.get() != want {
-			t.Errorf("w.get()=%d  want=%d \n", w.get(), want)
-		}
-	}
-
-	assertErr := func(t *testing.T, got error, want error) {
-
-		if got == nil {
-			t.Fatal("want an error but not get \n")
-		}
-
-		// 获取到错误信息字符串
-		if got != want {
-			t.Errorf("got= %s want= %s\n", got, want)
-		}
-
-	}
 
 	t.Run("存钱", func(t *testing.T) {
 		w := Wallet{}
 
 		w.add(Bitcoin(10)) //增加10元存款
 
-		errorMsg(t, w, Bitcoin(10))
+		assertMoney(t, w, Bitcoin(10))
 	})
 
 	t.Run("取钱", func(t *testing.T) {
 		w := Wallet{Bitcoin(30)}
 
-		w.withDraw(Bitcoin(10)) //取出10元存款
+		err := w.withDraw(Bitcoin(10)) //取出10元存款
 
-		errorMsg(t, w, Bitcoin(20))
+		assertMoney(t, w, Bitcoin(20))
+		assertErr(t, err, InWalletErr)
 
 	})
 
@@ -101,9 +84,50 @@ func TestWallet(t *testing.T) {
 
 		err := w.withDraw(Bitcoin(100)) // 只有20元却要取出100元 取出必定失败
 
-		errorMsg(t, w, Bitcoin(20))
+		assertMoney(t, w, Bitcoin(20))
 		assertErr(t, err, InWalletErr)
-
 	})
+}
+
+// @func: assertMoney
+// @brief: 余额不符合预期
+// @author: Kewin Li
+// @param: *testing.T t
+// @param: Wallet w
+// @param: Bitcoin want
+func assertMoney(t *testing.T, w Wallet, want Bitcoin) {
+
+	if w.get() != want {
+		t.Errorf("w.get()=%d  want=%d \n", w.get(), want)
+	}
+}
+
+// @func: assertNoErr
+// @brief: 无错误返回中断
+// @author: Kewin Li
+// @param: *testing.T t
+// @param: error got
+// @param: error want
+func assertNoErr(t *testing.T, got error) {
+	if got != nil {
+		t.Fatal("get an error but not request!\n")
+	}
+}
+
+// @func: assertErr
+// @brief: 错误中断
+// @author: Kewin Li
+// @param: *testing.T t
+// @param: error got
+// @param: error want
+func assertErr(t *testing.T, got error, want error) {
+	if got == nil {
+		t.Fatal("want an error but not get \n")
+	}
+
+	// 获取到错误信息字符串
+	if got != want {
+		t.Errorf("got= %s want= %s\n", got, want)
+	}
 
 }
