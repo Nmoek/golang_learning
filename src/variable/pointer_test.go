@@ -9,11 +9,6 @@ import (
 // 类型重命名
 type Bitcoin int
 
-// Stringer @brief: 字符串转换接口
-type Stringer interface {
-	String() string
-}
-
 // Wallet @brief: 钱包结构体
 type Wallet struct {
 	money Bitcoin
