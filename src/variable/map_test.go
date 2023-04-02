@@ -8,17 +8,29 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"testing"
 )
 
 type Dictionary map[string]string
 
-var errorNotFound = errors.New("can not find result!")
-var errorKeyNull = errors.New("add key is null!")
-var errorKeyExist = errors.New("add key is existed!")
-var errorKeyNotExist = errors.New("key is not existed!")
+type DictionaryError string
+
+const (
+	errorNotFound    = DictionaryError("can not find result!")
+	errorKeyNull     = DictionaryError("add key is null!")
+	errorKeyExist    = DictionaryError("add key is existed!")
+	errorKeyNotExist = DictionaryError("key is not existed!")
+)
+
+// @func: Error
+// @brief: 重载错误打印接口
+// @author: Kewin Li
+// @receiver: DictionaryError e
+// @return string
+func (e DictionaryError) Error() string {
+	return string(e)
+}
 
 // @func: Search
 // @brief: 方法返回查询结果
