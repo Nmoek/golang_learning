@@ -1,6 +1,6 @@
 /*
  * @file:maps_test.go
- * @brief: maps的测试学习
+ * @brief: maps的"增删改查"测试学习
  * @author: Kewin Li
  * @date:2023-04-01
  */
@@ -9,15 +9,19 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 )
 
 type Dictionary map[string]string
 
 var errorNotFound = errors.New("can not find result!")
+var errorKeyNull = errors.New("add key is null!")
+var errorKeyExist = errors.New("add key is existed!")
+var errorKeyNotExist = errors.New("key is not existed!")
 
 // @func: Search
-// @brief: 哈希表抽象为方法返回查询结果
+// @brief: 方法返回查询结果
 // @author: Kewin Li
 // @param: map[string]string dictionary
 // @param: string key
@@ -26,7 +30,7 @@ func (dictionary Dictionary) Search(key string) (string, error) {
 
 	result, ok := dictionary[key]
 
-	if !ok {
+	if ok != true {
 		return "", errorNotFound
 	}
 
@@ -34,7 +38,7 @@ func (dictionary Dictionary) Search(key string) (string, error) {
 }
 
 // @func: Search
-// @brief: 返回哈希查询结果
+// @brief: h函数返回查询结果
 // @author: Kewin Li
 // @param: map[string]string dictionary
 // @return string
@@ -79,9 +83,298 @@ func TestSearch(t *testing.T) {
 	t.Run("unknow key", func(t *testing.T) {
 
 		dic := Dictionary{"test3": "this my test"}
-		_, err := dic.Search("unknow")
+		got, err := dic.Search("unknow")
+
+		//打印一下，传入非法key后会得到什么
+		fmt.Printf("map result info: ")
+
+		fmt.Printf("got type=%T val=%v\n", got, got)
 
 		errorMsg(t, err, errorNotFound)
+	})
+
+}
+
+// @func: AddKey
+// @brief: 函数添加键值
+// @author: Kewin Li
+// @param: Dictionary d
+// @param: string key
+// @param: string result
+// @return string
+// @return error
+func AddKey(d Dictionary, key string, result string) error {
+	if key == "" {
+		return errorKeyNull
+	}
+
+	_, err := d.Search(key)
+
+	switch err {
+	case errorNotFound:
+		{
+			d[key] = result
+		}
+	case nil:
+		{
+			return errorKeyExist
+		}
+
+	default:
+		{
+			return err
+		}
+	}
+
+	return nil
+}
+
+// @func: AddKey
+// @brief: 方法添加键值
+// @author: Kewin Li
+// @receiver: Dictionary d
+// @param: string key
+// @param: string result
+// @return error
+func (d Dictionary) AddKey(key string, result string) error {
+	if key == "" {
+		return errorKeyNull
+	}
+
+	val, _ := d.Search(key)
+	if val != "" {
+		return errorKeyExist
+	}
+
+	d[key] = result
+
+	return nil
+}
+
+// @func: TestAdd
+// @brief: 测试键值添加
+// @author: Kewin Li
+// @param: *testing.T t
+func TestAdd(t *testing.T) {
+
+	//通过函数调用添加键值
+	t.Run("test add 1", func(t *testing.T) {
+		dic := Dictionary{}
+
+		err := AddKey(dic, "test add", "this a add")
+		if err != nil {
+			t.Fatalf("err= %s\n", err.Error())
+		}
+
+		got, _ := dic.Search("test add")
+		want := "this a add"
+
+		checkResult(t, got, want)
+	})
+
+	// 通过方法调用添加键值
+	t.Run("test add 2", func(t *testing.T) {
+
+		dic := Dictionary{}
+		err := dic.AddKey("test add2", "this a add2")
+		if err != nil {
+			t.Fatalf("err=%s \n", err.Error())
+		}
+
+		got, _ := dic.Search("test add2")
+		want := "this a add2"
+
+		checkResult(t, got, want)
+
+	})
+
+	//尝试添加一个相同的key
+	t.Run("test add exist key", func(t *testing.T) {
+
+		key := "test3"
+		val := "this my test3"
+		dic := Dictionary{key: val}
+
+		err := dic.AddKey("test3", "oh no")
+
+		if err != nil {
+			t.Fatalf("key=%s err=%s \n", key, err.Error())
+		}
+
+	})
+
+}
+
+// @func: Update
+// @brief: 函数修改键值对
+// @author: Kewin Li
+// @param: Dictionary d
+// @param: string key
+// @param: string val
+// @return error
+func Update(d Dictionary, key string, val string) error {
+
+	_, err := d.Search(key)
+
+	if err != nil {
+		return errorKeyNotExist
+	}
+
+	d[key] = val
+
+	return nil
+}
+
+// @func: Update
+// @brief: 方法修改键值对
+// @author: Kewin Li
+// @receiver: Dictionary d
+// @param: string key
+// @param: string val
+// @return error
+func (d Dictionary) Update(key string, val string) error {
+	_, err := d.Search(key)
+
+	// key不存在不能进行修改动作
+	if err != nil {
+		return errorKeyNotExist
+	}
+
+	d[key] = val
+
+	return nil
+}
+
+// @func: TestUpdate
+// @brief: 测试键值修改
+// @author: Kewin Li
+// @param: *testing.T t
+func TestUpdate(t *testing.T) {
+
+	key := "test"
+	val := "this my test"
+	dic := Dictionary{key: val}
+
+	//通过函数调用修改键值对
+	t.Run("test update 1", func(t *testing.T) {
+
+		val = "this my update1"
+
+		err := Update(dic, key, val)
+		if err != nil {
+			t.Errorf("key='%s' val='%s' err='%s' \n", key, val, err.Error())
+		}
+
+		result, _ := dic.Search(key)
+
+		checkResult(t, result, val)
+
+	})
+
+	// 通过方法调用修改键值对
+	t.Run("test update 2", func(t *testing.T) {
+
+		val = "this my update2"
+
+		err := dic.Update("test1", val)
+		if err != nil {
+			t.Errorf("key='%s' val='%s' err='%s' \n", key, val, err.Error())
+		}
+
+		result, _ := dic.Search(key)
+
+		checkResult(t, result, val)
+
+	})
+
+}
+
+// @func: DeleteKey
+// @brief: 函数删除键值对
+// @author: Kewin Li
+// @param: Dictionary d
+// @param: string key
+// @return error
+func DeleteKey(d Dictionary, key string) error {
+
+	_, err := d.Search(key)
+
+	if err != nil {
+		return err
+	}
+
+	delete(d, key)
+
+	return nil
+
+}
+
+// @func: DeleteKey
+// @brief: 方法删除键值对
+// @author: Kewin Li
+// @receiver: Dictionary d
+// @param: string key
+// @return error
+func (d Dictionary) DeleteKey(key string) error {
+	_, err := d.Search(key)
+
+	if err != nil {
+		return err
+	}
+
+	delete(d, key)
+
+	return nil
+
+}
+
+// @func: TestDelete
+// @brief: 测试键值对删除
+// @author: Kewin Li
+// @param: *testing.T t
+func TestDelete(t *testing.T) {
+
+	key := "test"
+	val := "this a test"
+	dic := Dictionary{}
+
+	for i := 0; i < 10; i++ {
+		new_key := fmt.Sprintf("%s%d", key, i)
+		new_val := fmt.Sprintf("%s%d", val, i)
+
+		err := dic.AddKey(new_key, new_val)
+		if err != nil {
+			t.Fatalf("key='%s' val='%s' err='%s' \n", new_key, new_val, err.Error())
+		}
+	}
+
+	fmt.Printf("\ndic=%v \n", dic)
+
+	//函数调用删除键值对
+	t.Run("test delete 1", func(t *testing.T) {
+
+		del_key := "test0"
+
+		err := DeleteKey(dic, del_key)
+		if err != nil {
+			t.Fatalf("del_key='%s' err='%s' \n", del_key, err.Error())
+		}
+
+		fmt.Printf("\ndic=%v \n", dic)
+
+	})
+
+	//方法调用删除键值对
+	t.Run("test delete 2", func(t *testing.T) {
+		del_key := "test1"
+
+		err := dic.DeleteKey(del_key)
+		if err != nil {
+			t.Fatalf("del_key='%s' err='%s' \n", del_key, err.Error())
+		}
+
+		fmt.Printf("\ndic=%v \n", dic)
+
 	})
 
 }
