@@ -1,6 +1,6 @@
 /*
  * @file: dependency_injection_test.go
- * @brief: 依赖注入测试学习
+ * @brief: 依赖注入(DI)测试学习
  * @author: Kewin Li
  * @date: 2023-04-02
  */
