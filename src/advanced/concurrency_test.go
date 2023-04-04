@@ -15,6 +15,11 @@ import (
 
 type WebsiteChecker func(string) bool
 
+type _result struct {
+	string
+	bool
+}
+
 // @func: CheckWebsites
 // @brief: 检查urls列表的合法性
 // @author: Kewin Li
@@ -23,17 +28,24 @@ type WebsiteChecker func(string) bool
 // @return map
 func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 	results := make(map[string]bool)
+	resultChannel := make(chan _result)
 
+	//向各个子线程发送数据
 	for _, url := range urls {
 		//匿名函数直接开启一个新的goroutine
 		go func(u string) {
-			results[u] = wc(u)
+			fmt.Printf("before r.string=%s \n", u)
+			resultChannel <- _result{u, wc(u)}
 		}(url)
-
 	}
 
-	time.Sleep(1 * time.Second)
-	fmt.Printf("results=%v \n", results)
+	//从各个子线程回收数据
+	for i := 0; i < len(urls); i++ {
+		r := <-resultChannel
+		fmt.Printf("after r.string=%s r.bool=%v \n", r.string, r.bool)
+		results[r.string] = r.bool
+	}
+
 	return results
 }
 
@@ -97,7 +109,7 @@ func TestWebsiteChecker(t *testing.T) {
 
 	expectResults := map[string]bool{
 		"http://google.com": false,
-		"http://baidu.com":  true,
+		"http://baidu.co":   true,
 	}
 
 	if !reflect.DeepEqual(results, expectResults) {
