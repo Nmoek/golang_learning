@@ -24,7 +24,11 @@ func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 	results := make(map[string]bool)
 
 	for _, url := range urls {
-		results[url] = wc(url)
+		//匿名函数直接开启一个新的goroutine
+		go func() {
+			results[url] = wc(url)
+		}()
+
 	}
 
 	return results
