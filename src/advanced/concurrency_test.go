@@ -7,6 +7,7 @@
 package concurrency_test
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -15,7 +16,7 @@ import (
 type WebsiteChecker func(string) bool
 
 // @func: CheckWebsites
-// @brief: 检查每一个传入的url合法性
+// @brief: 检查urls列表的合法性
 // @author: Kewin Li
 // @param: WebsiteChecker wc
 // @param: []string urls
@@ -25,12 +26,14 @@ func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 
 	for _, url := range urls {
 		//匿名函数直接开启一个新的goroutine
-		go func() {
-			results[url] = wc(url)
-		}()
+		go func(u string) {
+			results[u] = wc(u)
+		}(url)
 
 	}
 
+	time.Sleep(1 * time.Second)
+	fmt.Printf("results=%v \n", results)
 	return results
 }
 
