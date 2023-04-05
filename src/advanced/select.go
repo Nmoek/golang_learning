@@ -10,12 +10,30 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"net/http/httptest"
 	"time"
 )
 
 type _result struct {
 	url      string
 	duration float64
+}
+
+// @func: Racer
+// @brief: 返回响应较快的URL
+// @author: Kewin Li
+// @param: string a
+// @param: string b
+// @return string
+func Racer(a string, b string) string {
+	durationA := GetDuration(a)
+	durationB := GetDuration(b)
+
+	if durationA < durationB {
+		return a
+	}
+
+	return b
 }
 
 // @func: GetDuration
@@ -32,30 +50,34 @@ func GetDuration(url string) float64 {
 
 }
 
+// @func: CreateHTTPServer
+// @brief: 创建一个HTTP测试服务器对象
+// @author: Kewin Li
+// @param: time.Duration delay
+// @return *httptest.Server
+func CreateHTTPServer(delay time.Duration) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(delay)
+		w.WriteHeader(http.StatusOK)
+	}))
+
+}
+
 func main() {
 
-	a := "http://github.com"
-	b := "http://baidu.com"
+	slowServer := CreateHTTPServer(20 * time.Millisecond)
+	quickServer := CreateHTTPServer(0 * time.Microsecond)
 
-	urls := []string{a, b}
-	channelResult := make(chan _result)
+	defer slowServer.Close()
+	defer quickServer.Close()
 
-	for _, url := range urls {
+	slowUrl := slowServer.URL
+	quickUrl := quickServer.URL
 
-		go func(u string) {
-			channelResult <- _result{u, GetDuration(u)}
-		}(url)
+	fmt.Printf("slowUrl=%s  quickUrl=%s \n", slowUrl, quickUrl)
 
-	}
+	result := Racer(slowUrl, quickUrl)
 
-	for i := 0; i < len(urls); i++ {
+	fmt.Printf("result=%s \n", result)
 
-		go func() {
-			r := <-channelResult //疑似阻塞等待
-
-			fmt.Printf("url=%s duration=%.2f ms \n", r.url, r.duration/1000000.0)
-		}()
-	}
-
-	time.Sleep(11 * time.Second)
 }

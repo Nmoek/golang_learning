@@ -9,6 +9,7 @@ package select_test
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 )
@@ -41,14 +42,24 @@ func Racer(a string, b string) string {
 // @param: *testing.T t
 func TestRacer(t *testing.T) {
 
-	slowUrl := "http://github.com"
-	quickUrl := "http://baidu.com"
+	slowServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(20 * time.Millisecond)
+		w.WriteHeader(http.StatusOK)
+	}))
+
+	quickServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+
+	slowUrl := slowServer.URL
+	quickUrl := quickServer.URL
 
 	got := Racer(slowUrl, quickUrl)
 	want := quickUrl
-
 	if got != want {
-		t.Errorf("got=%s want=%s \n", got, want)
+		t.Errorf("got=%s  want=%s \n", got, want)
 	}
 
+	slowServer.Close()
+	quickServer.Close()
 }
