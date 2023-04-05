@@ -19,6 +19,20 @@ type _result struct {
 	duration float64
 }
 
+// @func: GetDuration
+// @brief: 获取http请求返回时间间隔
+// @author: Kewin Li
+// @param: string url
+// @return float64
+func GetDuration(url string) float64 {
+
+	start := time.Now()
+	http.Get(url)
+
+	return float64(time.Since(start))
+
+}
+
 // @func: Racer
 // @brief: 返回响应较快的URL
 // @author: Kewin Li
@@ -34,20 +48,6 @@ func Racer(a string, b string) string {
 	}
 
 	return b
-}
-
-// @func: GetDuration
-// @brief: 获取http请求返回时间间隔
-// @author: Kewin Li
-// @param: string url
-// @return float64
-func GetDuration(url string) float64 {
-
-	start := time.Now()
-	http.Get(url)
-
-	return float64(time.Since(start))
-
 }
 
 // @func: CreateHTTPServer
