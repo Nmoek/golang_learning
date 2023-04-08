@@ -27,4 +27,12 @@ func main() {
 
 	fmt.Printf("a1=%d, b1=%d, d1=%d \n", a1, b1, d1)
 
+	//3. 可以只写一个iota
+	const (
+		a2 = iota
+		b2
+		c2
+	)
+	fmt.Printf("a2=%d, b2=%d, c2=%d \n", a2, b2, c2)
+
 }
