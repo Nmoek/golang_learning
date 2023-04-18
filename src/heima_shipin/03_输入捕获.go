@@ -10,7 +10,7 @@ func main() {
 	fmt.Scanf("%d", &a)
 	//input: 121231
 	fmt.Printf("a=%d \n", a)
-	// output:a=121231
+	//output: a=121231
 
 	var b int
 	fmt.Scan(&b)
