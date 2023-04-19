@@ -19,6 +19,7 @@ func Mul(a int, b int) int {
 }
 
 // Go中最简单的多态
+// 任何形式的type命名都能构造"interface 接口"
 func Cal(a int, b int, f FuncType) (res int) {
 	return f(a, b)
 }
