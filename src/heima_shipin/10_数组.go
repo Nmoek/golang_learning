@@ -2,12 +2,31 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
-// @func: test2
+// @func: numbers3
+// @brief: 数组比较与相互赋值
+// @author: Kewin Li
+func numbers3() {
+
+	a := [5]int{1, 2, 3, 4, 5}
+	b := [5]int{1, 2, 3, 4, 5}
+	c := [5]int{1, 2, 3, 4}
+
+	fmt.Printf("a == b: %v \n", a == b)
+	fmt.Printf("a == c: %v \n", a == c)
+
+	// err: 同一种类型的数组才能相互比较与赋值
+	// d := [4]int{1, 2, 3, 4}
+	// fmt.Printf("a == d: %v \n", a == d)
+
+}
+
+// @func: numbers2
 // @brief: 二维数组的本质
 // @author: Kewin Li
-func test2() {
+func numbers2() {
 
 	a := [2][2]int{{1, 2}, {3, 4}}
 	b := a[0]
@@ -22,10 +41,10 @@ func test2() {
 	fmt.Printf("pb=%T: %p \n", pb, pb)
 }
 
-// @func: test1
+// @func: numbers1
 // @brief: 数组初始化
 // @author: Kewin Li
-func test1() {
+func numbers1() {
 
 	//1. 全部初始化
 	var a [5]int = [5]int{1, 2, 3, 4, 5}
@@ -42,7 +61,18 @@ func test1() {
 }
 
 func main() {
-	// test1()
 
-	test2()
+	args := os.Args
+
+	switch args[1][0] {
+	case '1':
+		numbers1()
+
+	case '2':
+		numbers2()
+
+	case '3':
+		numbers3()
+	}
+
 }
