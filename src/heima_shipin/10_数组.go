@@ -2,8 +2,33 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
+	"time"
 )
+
+func test2(nums *[10]int) {
+	(*nums)[0] = 666
+}
+
+func test1(nums [10]int) {
+	nums[0] = 666
+}
+
+func numbers4() {
+
+	rand.Seed(time.Now().UnixMicro())
+	var nums [10]int
+	for i := 0; i < 10; i++ {
+		nums[i] = rand.Intn(100)
+	}
+
+	test1(nums)
+	fmt.Printf("nums=%v \n", nums)
+
+	test2(&nums)
+	fmt.Printf("nums=%v \n", nums)
+}
 
 // @func: numbers3
 // @brief: 数组比较与相互赋值
@@ -73,6 +98,9 @@ func main() {
 
 	case '3':
 		numbers3()
+
+	case '4':
+		numbers4()
 	}
 
 }
