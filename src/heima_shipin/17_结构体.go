@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-// Student @brief: 学生结构体
-type Student struct {
+// student @brief: 学生结构体
+type student struct {
 	age  int
 	name string
 	sex  byte // 1: 男 0:女
@@ -17,14 +17,14 @@ type Student struct {
 // @author: Kewin Li
 func test1() {
 	// 初始化时顺序初始化，不指定字段时必须全部初始化
-	// var s1 Student = Student{1}
-	s1 := Student{1, "liming", 1}
+	// var s1 student = student{1}
+	s1 := student{1, "liming", 1}
 	fmt.Printf("s1=%v \n", s1)
 
 	fmt.Printf("------------------------\n")
 
 	// 指明字段可以部分初始化，未指明的处理为0/nil
-	s2 := Student{age: 2, name: "wanghong"}
+	s2 := student{age: 2, name: "wanghong"}
 	fmt.Printf("s2=%v \n", s2)
 
 	fmt.Printf("------------------------\n")
@@ -39,7 +39,7 @@ func test1() {
 	fmt.Printf("------------------------\n")
 
 	//Go中成员访问也被简化，无论是实体还是指针都可以用'.'访问
-	s3 := new(Student)
+	s3 := new(student)
 	s3.age = 4
 	s3.name = "5615616"
 	s3.sex = 0
@@ -48,7 +48,7 @@ func test1() {
 
 }
 
-func studentIsRquel(s1 Student, s2 Student) {
+func studentIsRquel(s1 student, s2 student) {
 	if s1 == s2 {
 		fmt.Printf("OK! \n")
 	} else {
@@ -61,8 +61,8 @@ func studentIsRquel(s1 Student, s2 Student) {
 // @author: Kewin Li
 func test2() {
 
-	s1 := Student{}
-	s2 := Student{}
+	s1 := student{}
+	s2 := student{}
 
 	studentIsRquel(s1, s2)
 	fmt.Printf("------------------------\n")
