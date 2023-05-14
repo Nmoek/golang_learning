@@ -85,6 +85,31 @@ func (w worker) printfInfo() {
 	fmt.Printf("%+v\n", w)
 }
 
+// @func: test4
+// @brief: 方法值以及方法表达式
+// @author: Kewin Li
+func test4() {
+
+	// 1. 方法值
+	w1 := worker{}
+	// 有点儿类似C++的函数对象
+	pFunc := w1.printfInfo
+	pFunc() //可以隐藏接收者
+	fmt.Printf("pFunc=%T \n", pFunc)
+
+	fmt.Printf("-----------------------\n")
+
+	// 2. 方法表达式
+	w2 := worker{}
+	vFunc := (*worker).setAge
+	vFunc(&w2, 34)
+	fmt.Printf("vFunc=%T \n", vFunc)
+
+	vFunc2 := (worker).printfInfo
+	vFunc2(w2)
+	fmt.Printf("vFunc2=%T \n", vFunc2)
+}
+
 // @func: test3
 // @brief: 方法的继承与重写
 // @author: Kewin Li
@@ -142,6 +167,8 @@ func main() {
 		test2()
 	case '3':
 		test3()
+	case '4':
+		test4()
 	}
 
 }
