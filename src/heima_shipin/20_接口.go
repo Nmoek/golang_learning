@@ -121,11 +121,11 @@ func test4() {
 	for _, data := range fs {
 		switch v := data.(type) {
 		case int:
-			fmt.Printf("type=int, val=%+v \n", v)
+			fmt.Printf("type=int, val=%+v\n", v)
 		case string:
-			fmt.Printf("type=string, val=%+v \n", v)
+			fmt.Printf("type=string, val=%+v\n", v)
 		case float64:
-			fmt.Printf("type=float64, val=%+v \n", v)
+			fmt.Printf("type=float64, val=%+v\n", v)
 		}
 	}
 
