@@ -95,6 +95,42 @@ func whoSinge(p Personer, geming string) {
 	}
 }
 
+// @func: test4
+// @brief: 接口类型断言判断
+// @author: Kewin Li
+func test4() {
+	// 这里的功能主要是解决判断当前接口返回的数据类型
+
+	// 1. if型 类型断言
+	fs := make([]interface{}, 3)
+	fs[0] = 1
+	fs[1] = "6666"
+	fs[2] = 3.516
+
+	for i, data := range fs {
+
+		if val, flag := data.(int); flag {
+			fmt.Printf("i=%d, val=%+v, flag=%v\n", i, val, flag)
+		} else {
+			fmt.Printf("i=%d, type=%T \n", i, data)
+		}
+	}
+
+	fmt.Printf("--------------------\n")
+	// 2. switch型 类型断言
+	for _, data := range fs {
+		switch v := data.(type) {
+		case int:
+			fmt.Printf("type=int, val=%+v \n", v)
+		case string:
+			fmt.Printf("type=string, val=%+v \n", v)
+		case float64:
+			fmt.Printf("type=float64, val=%+v \n", v)
+		}
+	}
+
+}
+
 // @func: test3
 // @brief: 空接口类型
 // @author: Kewin Li
@@ -179,6 +215,8 @@ func main() {
 		test2()
 	case '3':
 		test3()
+	case '4':
+		test4()
 	}
 
 }
