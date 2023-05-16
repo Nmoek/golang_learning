@@ -6,6 +6,22 @@ import (
 	"os"
 )
 
+// @func: test4
+// @brief: recover函数使用
+// @author: Kewin Li
+func test4() {
+
+	// 有时需要提示致命错误，但不期望程序直接崩溃
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("%v \n", err)
+		}
+	}()
+
+	arr := []int{1}
+	arr[2] = 3
+}
+
 // @func: test3
 // @brief: panic的使用
 // @author: Kewin Li
@@ -65,6 +81,8 @@ func main() {
 		test2()
 	case '3':
 		test3()
+	case '4':
+		test4()
 
 	}
 
