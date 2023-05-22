@@ -6,6 +6,19 @@ import (
 	"os"
 )
 
+func test3() {
+
+	m_f, _ := os.OpenFile("./test.dat", os.O_CREATE|os.O_WRONLY, 0666)
+	buf := make([]byte, 1*1024*1024)
+
+	for i := 0; i < 10; i++ {
+		m_f.Write(buf)
+	}
+
+	m_f.Close()
+
+}
+
 // @func: test2
 // @brief: 读取文件内容并将文件删除
 // @author: Kewin Li
@@ -85,6 +98,8 @@ func main() {
 	case '2':
 		test2()
 		//TODO: 还有一种读取方式是按行读取，使用包bufio
+	case '3':
+		test3()
 	}
 
 }
