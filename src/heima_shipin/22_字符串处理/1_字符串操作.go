@@ -11,6 +11,8 @@ import (
 // @author: Kewin Li
 func testFields() {
 
+	// func Fields(s string) []string
+
 	s1 := "1 2 3 4 5 6"
 
 	fmt.Printf("s1=%s, res=%s \n", s1, strings.Fields(s1))
@@ -27,6 +29,7 @@ func testTrim() {
 	s1 := "!!!!!12354!!!!!!"
 
 	fmt.Printf("s1=%s, res=%s \n", s1, strings.Trim(s1, "!"))
+	fmt.Printf("s1=%s, res=%s \n", s1, strings.Trim(s1, "!14"))
 
 }
 
@@ -34,6 +37,8 @@ func testTrim() {
 // @brief: 将字符串s按dep串分割为切片
 // @author: Kewin Li
 func testSplit() {
+
+	// func Split(s, sep string) []string
 
 	s1 := "1,2,3,4,5"
 	fmt.Printf("s1=%s, res=%v \n", s1, strings.Split(s1, ","))

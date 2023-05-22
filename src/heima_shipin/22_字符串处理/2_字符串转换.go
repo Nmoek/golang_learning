@@ -6,27 +6,10 @@ import (
 	"strconv"
 )
 
-// @func: testFormat
-// @brief: Format函数将其他类型转换为字符串类型/将字符串类型转换为其他类型
+// @func: testParse
+// @brief: Parse函数将字符串类型转换为其他类型
 // @author: Kewin Li
-func testFormat() {
-
-	// 1. 其他类型----->字符串
-	s1 := strconv.FormatInt(51615, 10)
-	fmt.Printf("s1=%s \n", s1)
-	fmt.Printf("--------------------\n")
-
-	s2 := strconv.FormatBool(true)
-	fmt.Printf("s2=%s \n", s2)
-
-	fmt.Printf("--------------------\n")
-
-	s3 := strconv.FormatFloat(3.14159, 'f', -1, 64)
-	fmt.Printf("s3=%s \n", s3)
-
-	fmt.Printf("*********************\n")
-
-	// 2. 字符串----->其他类型
+func testParse() {
 	val1, err1 := strconv.ParseInt("121561", 10, 64)
 	if err1 == nil {
 		fmt.Printf("val=%v \n", val1)
@@ -51,6 +34,26 @@ func testFormat() {
 	} else {
 		fmt.Printf("err=%v \n", err4.Error())
 	}
+}
+
+// @func: testFormat
+// @brief: Format函数将其他类型转换为字符串类型
+// @author: Kewin Li
+func testFormat() {
+
+	// 1. 其他类型----->字符串
+	s1 := strconv.FormatInt(51615, 10)
+	fmt.Printf("s1=%s \n", s1)
+	fmt.Printf("--------------------\n")
+
+	s2 := strconv.FormatBool(true)
+	fmt.Printf("s2=%s \n", s2)
+
+	fmt.Printf("--------------------\n")
+
+	s3 := strconv.FormatFloat(3.14159, 'f', -1, 64)
+	fmt.Printf("s3=%s \n", s3)
+
 }
 
 // @func: testAppend
@@ -99,6 +102,8 @@ func main() {
 		testAppend()
 	case '2':
 		testFormat()
+	case '3':
+		testParse()
 	}
 
 }
