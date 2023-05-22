@@ -3,5 +3,10 @@ bin
 #ignore pkg dir
 pkg
 
+.vscode/
+
 #ignore all .mod
 *.mod
+
+*.dat
+*.json
