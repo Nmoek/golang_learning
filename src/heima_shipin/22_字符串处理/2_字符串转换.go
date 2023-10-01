@@ -6,6 +6,23 @@ import (
 	"strconv"
 )
 
+// @func: testSprintf
+// @brief: 测试Sprintf函数
+// @author: Kewin Li
+func testSprintf() {
+
+	s1 := fmt.Sprintf("%d", 12345)
+	fmt.Printf("%T s1=%v \n", s1, s1)
+
+	s2 := fmt.Sprintf("%.2f", 23.146)
+	fmt.Printf("%T s2=%v \n", s2, s2)
+
+	// bool类型使用 %t作为占位符
+	s3 := fmt.Sprintf("%t", true)
+	fmt.Printf("%T s3=%v \n", s3, s3)
+
+}
+
 // @func: testParse
 // @brief: Parse函数将字符串类型转换为其他类型
 // @author: Kewin Li
@@ -98,12 +115,21 @@ func main() {
 	args := os.Args
 
 	switch args[1][0] {
+	/*1. 使用strcov包*/
 	case '1':
 		testAppend()
 	case '2':
 		testFormat()
 	case '3':
 		testParse()
+
+	/*2. 使用fmt.Sprintf 比价灵活方便*/
+	case '4':
+		testSprintf()
+
+	default:
+		fmt.Printf("input type err! %v \n", args[1][0])
+		return
 	}
 
 }

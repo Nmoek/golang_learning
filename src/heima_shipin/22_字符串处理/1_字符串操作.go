@@ -6,6 +6,29 @@ import (
 	"strings"
 )
 
+// @func: testChinese
+// @brief: 处理ascii+中文的情况
+// @author: Kewin Li
+func testChinese() {
+
+	s1 := "你好 hello"
+
+	r1 := []rune(s1)
+
+	fmt.Printf("s1 len=%d, r1 len=%d \n", len(s1), len(r1))
+
+	fmt.Printf("s1=")
+	for i := 0; i < len(s1); i++ {
+		fmt.Printf("%c ", s1[i])
+	}
+	fmt.Printf("\n")
+	fmt.Printf("r1=")
+	for i := 0; i < len(r1); i++ {
+		fmt.Printf("%c ", r1[i])
+	}
+	fmt.Printf("\n")
+}
+
 // @func: testFields
 // @brief: 将字符串s的空格去除，并按空格分割返回切片
 // @author: Kewin Li
@@ -177,6 +200,8 @@ func main() {
 		testTrim()
 	case '8':
 		testFields()
+	case '9':
+		testChinese()
 	}
 
 }

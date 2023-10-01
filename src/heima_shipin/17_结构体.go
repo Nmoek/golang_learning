@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -78,6 +79,71 @@ func test2() {
 
 }
 
+// @func: test3
+// @date: 2023年8月10日
+// @brief: 检验结构体是否属于值类型
+// @author: Kewin Li
+func test3() {
+
+	s1 := student{15, "ljk", 1}
+
+	fmt.Printf("%+v \n", s1)
+
+	s2 := s1
+
+	s2.age = 22
+
+	// 修改s2的值观察s1的值是否也改变
+	fmt.Printf("%+v \n", s1)
+	fmt.Printf("%+v \n", s2)
+
+}
+
+type m_struct struct {
+	Age  int            `json:"age"`
+	Name []byte         `json:"name"`
+	Mp   map[int]string `json:"mp"`
+}
+
+// @func: test4
+// @date: 2023年8月13日
+// @brief: 证明结构体的值类型性质
+// @author: Kewin Li
+func test4() {
+
+	m_st1 := m_struct{
+		1,
+		[]byte("ljk"),
+		map[int]string{111: "111"},
+	}
+
+	fmt.Println("m_st1:", m_st1)
+
+	m_st2 := m_st1
+
+	m_st2.Name = []byte("zqc")
+	m_st2.Mp[111] = "222"
+
+	fmt.Println("m_st1:", m_st1)
+	fmt.Println("m_st2:", m_st2)
+
+	fmt.Printf("---------------------\n")
+
+	fmt.Println("m_st1:", m_st1)
+	m_pst1 := &m_st1
+
+	m_pst1.Name = []byte("ljk666")
+
+	fmt.Println("m_st1:", m_st1)
+
+	fmt.Printf("---------------------\n")
+
+	buf, _ := json.Marshal(m_st1)
+
+	fmt.Printf("%v \n", string(buf))
+
+}
+
 func main() {
 
 	args := os.Args
@@ -87,6 +153,11 @@ func main() {
 		test1()
 	case '2':
 		test2()
+	case '3':
+		test3()
+	case '4':
+		test4()
+
 	}
 
 }

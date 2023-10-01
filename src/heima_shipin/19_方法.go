@@ -156,6 +156,128 @@ func test1() {
 
 }
 
+type MethodUtils struct {
+}
+
+func (m MethodUtils) juzhen_10_8() {
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 8; j++ {
+			fmt.Printf("*")
+		}
+		fmt.Printf("\n")
+	}
+}
+
+func (m MethodUtils) juzhen_m_n(w int, h int) {
+	for i := 0; i < w; i++ {
+		for j := 0; j < h; j++ {
+			fmt.Printf("*")
+		}
+		fmt.Printf("\n")
+	}
+}
+
+func (m MethodUtils) juzhen_area(w, h int) float64 {
+
+	return float64(w * h)
+}
+
+// @func: timu1
+// @date: 2023年8月23日
+// @brief: 通过方法打印10*8矩阵
+// @author: Kewin Li
+func timu1() {
+
+	m1 := MethodUtils{}
+
+	m1.juzhen_10_8()
+}
+
+// @func: timu2
+// @date: 2023年8月23日
+// @brief: 通过方法打印m*n矩阵
+// @author: Kewin Li
+func timu2() {
+	m1 := MethodUtils{}
+
+	m1.juzhen_m_n(5, 6)
+}
+
+// @func: timu3
+// @date: 2023年8月23日
+// @brief: 通过方法打印计算矩阵面积
+// @author: Kewin Li
+func timu3() {
+	m1 := MethodUtils{}
+
+	area1 := m1.juzhen_area(5, 6)
+
+	fmt.Printf("area1= %f \n", area1)
+}
+
+type m_dog struct {
+	name   string
+	age    int
+	weight float64
+}
+
+func (d m_dog) say() {
+
+	fmt.Printf("m_dog info: %+v \n", d)
+}
+
+// @func: timu4
+// @date: 2023年9月5日
+// @brief: 定义一个狗对象，并实现打印方法
+// @author: Kewin Li
+func timu4() {
+
+	dog1 := m_dog{"wangcai", 2, 23.5}
+
+	dog1.say()
+
+}
+
+func deferReturnVal() {
+
+	for i := 0; i < 10; i++ {
+		defer func() {
+			fmt.Printf("%d \n", i)
+		}()
+	}
+}
+
+func deferReturnVal2() {
+
+	for i := 0; i < 10; i++ {
+		defer func(val int) {
+			fmt.Printf("%d \n", val)
+		}(i)
+	}
+}
+
+func deferReturnVal3() {
+	for i := 0; i < 10; i++ {
+		j := i
+		defer func() {
+			fmt.Printf("%d \n", j)
+		}()
+	}
+}
+
+// @func: defer_test
+// @date: 2023年9月25日
+// @brief: defer与闭包的使用
+// @author: Kewin Li
+func defer_test() {
+	deferReturnVal()
+	fmt.Printf("-------------\n")
+	deferReturnVal2()
+	fmt.Printf("-------------\n")
+	// ??
+	deferReturnVal3()
+}
+
 func main() {
 
 	args := os.Args
@@ -169,6 +291,19 @@ func main() {
 		test3()
 	case '4':
 		test4()
+	// 课堂练习1
+	case '5':
+		timu1()
+	// 课堂练习2
+	case '6':
+		timu2()
+	// 课堂练习3
+	case '7':
+		timu3()
+	case '8':
+		timu4()
+	case '9':
+		defer_test()
 	}
 
 }

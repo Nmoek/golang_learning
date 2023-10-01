@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -88,6 +90,60 @@ func test1() {
 	m_f.Close()
 }
 
+// @func: test4
+// @date: 2023年9月13日
+// @brief: 带缓冲的文件读操作Reader
+// @author: Kewin Li
+func test4() {
+
+	f, err1 := os.Open("./test.dat")
+	if err1 != nil {
+		fmt.Printf("open test.dat err! %s\n", err1)
+	}
+
+	m_reader := bufio.NewReader(f)
+
+	str := make([]byte, 10)
+	n, err2 := m_reader.Read(str)
+	if err2 != nil {
+		fmt.Printf("read err! %s\n", err2)
+	}
+
+	fmt.Printf("n=%d, str=%s \n", n, string(str))
+
+}
+
+// @func: test5
+// @date: 2023年9月14日
+// @brief: 带缓冲的文件写操作Writer
+// @author: Kewin Li
+func test5() {
+
+	f, err1 := os.OpenFile("./file1.dat", os.O_CREATE|os.O_WRONLY, 0777)
+	if err1 != nil {
+		fmt.Printf("open file1 err! %s \n", err1)
+		return
+	}
+
+	defer f.Close()
+
+	writer := bufio.NewWriter(f)
+
+	str := "hell beijing\n"
+
+	for i := 0; i < 5; i++ {
+		_, err := writer.WriteString(str)
+		if err != nil {
+			fmt.Printf("WriteString err! %s \n", err)
+			return
+		}
+	}
+
+	// 需要及时调用刷盘函数
+	writer.Flush()
+
+}
+
 func main() {
 
 	args := os.Args
@@ -100,6 +156,10 @@ func main() {
 		//TODO: 还有一种读取方式是按行读取，使用包bufio
 	case '3':
 		test3()
+	case '4':
+		test4()
+	case '5':
+		test5()
 	}
 
 }

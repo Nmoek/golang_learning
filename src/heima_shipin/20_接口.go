@@ -204,6 +204,90 @@ func test1() {
 
 }
 
+/*-----------------------------------------*/
+
+// monkey @brief: 猴子父类
+type monkey struct {
+	name string
+}
+
+type feixing interface {
+	learning_flying()
+}
+
+func (m monkey) panshu() {
+	fmt.Printf("%s  生来会爬树~~ \n", m.name)
+}
+
+type little_monkey struct {
+	monkey
+}
+
+func (l little_monkey) learning_flying() {
+	fmt.Printf("%s  学会飞行了! \n", l.name)
+}
+
+// @func: test5
+// @date: 2023年9月10日
+// @brief: 比较继承与接口实现的区别1
+// @author: Kewin Li
+func test5() {
+
+	// 1. 使用继承而来的函数方法
+	m_little_monkey1 := little_monkey{monkey{"猴子1"}}
+	m_little_monkey1.panshu()
+
+	// 2. 使用接口实现的函数
+	m_little_monkey1.learning_flying()
+
+}
+
+/*--------------------------------------*/
+
+type common_interfacer interface {
+	run()
+}
+
+type m_stA struct {
+}
+
+type m_stB struct {
+}
+
+func (this m_stA) run() {
+	fmt.Printf("A is running!!! \n")
+}
+
+func (this m_stA) special_funcA() {
+	fmt.Printf("only A processing!!! \n")
+}
+
+func (this m_stB) run() {
+	fmt.Printf("B is running!!! \n")
+}
+
+func run_do(c common_interfacer) {
+	c.run()
+
+	if a, ok := c.(m_stA); ok {
+		a.special_funcA()
+	}
+}
+
+// @func: test6
+// @date: 2023年9月12日
+// @brief: 类型断言来控制对象的特有方法调用
+// @author: Kewin Li
+func test6() {
+
+	a := m_stA{}
+	b := m_stB{}
+
+	run_do(a)
+	run_do(b)
+
+}
+
 func main() {
 
 	args := os.Args
@@ -217,6 +301,10 @@ func main() {
 		test3()
 	case '4':
 		test4()
+	case '5':
+		test5()
+	case '6':
+		test6()
 	}
 
 }
