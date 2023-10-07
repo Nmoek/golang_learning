@@ -44,12 +44,12 @@ func test1() {
 	}
 
 	readProduct := Product{}
-	//// 通过GORM提供的主键查询
+	// 通过GORM提供的主键查询
 	db.First(&readProduct, 1)
 	fmt.Printf("read1: %v \n", readProduct)
 
 	readProduct = Product{}
-	//// 通过条件查询
+	// 通过条件查询
 	db.Where("name = ?", "222").Find(&readProduct)
 	fmt.Printf("read2: %v \n", readProduct)
 
