@@ -54,7 +54,7 @@ func test2() {
 // @brief: 使用etcd远程配置
 // @author: Kewin Li
 func test3() {
-	err := viper.AddRemoteProvider("etcd3", "http://127.0.0.1:2379", "/kitbook")
+	err := viper.AddRemoteProvider("etcd3", "http://127.0.0.1:2379", "D:/Git/kitbook")
 	if err != nil {
 		panic(err)
 	}
@@ -77,7 +77,8 @@ func test3() {
 // @brief: 监听配置变更
 // @author: Kewin Li
 func test4() {
-	viper.SetConfigFile("viper/test_config.yaml")
+	// 坑点: windows下路径获取存在一些莫名其妙的错误
+	viper.SetConfigFile("D:/go_work/golang_learning/src/viper/test_config.yaml")
 	viper.SetConfigType("yaml")
 
 	//注意: 调用顺序不能改变
