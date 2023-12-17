@@ -1,5 +1,5 @@
 // Package sarama_test
-// @Description: kafka客户端测试
+// @Description: kafka客户端测试-生产者API
 package sarama_test
 
 import (
@@ -22,8 +22,6 @@ func TestSyncProducer(t *testing.T) {
 	cfg.Producer.Return.Successes = true
 	producer, err := sarama.NewSyncProducer(addr, cfg)
 	assert.NoError(t, err)
-
-	cf
 
 	/*向哪个分区发送消息*/
 	cfg.Producer.Partitioner = sarama.NewRandomPartitioner // 轮询
@@ -62,6 +60,7 @@ func TestAsyncProducer(t *testing.T) {
 	assert.NoError(t, err)
 
 	go func() {
+		// 监听消息发送成功与否
 		for {
 			select {
 			case msg := <-producer.Successes():
@@ -71,7 +70,7 @@ func TestAsyncProducer(t *testing.T) {
 				t.Error("消息发送失败", err2.Err, "val=", string(val))
 			}
 
-			time.Sleep(time.Second)
+			//time.Sleep(time.Second)
 		}
 
 	}()
@@ -93,7 +92,7 @@ func TestAsyncProducer(t *testing.T) {
 			Metadata: "metadata",
 		}
 		count++
-		time.Sleep(time.Second)
+		time.Sleep(300 * time.Millisecond)
 
 	}
 
