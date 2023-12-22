@@ -90,7 +90,7 @@ func (c *ConsumerHandler) ConsumeClaimV1(session sarama.ConsumerGroupSession, cl
 // @return error
 func (c *ConsumerHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	msgs := claim.Messages()
-	i := 0
+	count := 0
 	const batchSize = 10
 
 	for {
@@ -150,8 +150,8 @@ func (c *ConsumerHandler) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 			session.MarkMessage(msg, "")
 		}
 
-		fmt.Printf("%d批%d个已经提交", i, len(batch))
-		i++
+		fmt.Printf("%d批%d个已经提交", count, len(batch))
+		count++
 	}
 
 	return nil
