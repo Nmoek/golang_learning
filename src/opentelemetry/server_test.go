@@ -52,7 +52,8 @@ func TestServer(t *testing.T) {
 
 func newResource(serviceName, serviceVersion string) (*resource.Resource, error) {
 	return resource.Merge(resource.Default(),
-		resource.NewWithAttributes(semconv.SchemaURL,
+		resource.NewWithAttributes(
+			semconv.SchemaURL,
 			semconv.ServiceName(serviceName),
 			semconv.ServiceVersion(serviceVersion),
 		))
