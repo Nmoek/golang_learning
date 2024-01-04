@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "./grpc";
+
+message User{
+  int64 id = 1; //编号必须从1开始
+  string name = 2;
+  string addrs = 4;
+
+  oneof lianxi {
+    string phone = 5;
+    string email = 6;
+  }
+
+  enum Sex{
+    UNKNOW = 0;
+    MALE = 1;
+    FAMALE = 2;
+  }
+
+
+}
+
+service UserService {
+  rpc GetById(GetByIdRequest) returns(GetByIdResponse);
+}
+
+message GetByIdRequest {
+  int64 id = 1;
+}
+
+message GetByIdResponse {
+  User user = 1;
+}
