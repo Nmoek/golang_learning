@@ -45,8 +45,15 @@ func (b *BalancerTestSuite) TestServer() {
 			Name: "127.0.0.1:8091",
 		})
 	}()
-	b.startServer("127.0.0.1:8092", 30, &Server{
-		Name: "127.0.0.1:8092",
+
+	go func() {
+		b.startServer("127.0.0.1:8092", 5, &FailedServer{
+			Name: "127.0.0.1:8092",
+		})
+	}()
+
+	b.startServer("127.0.0.1:8093", 30, &Server{
+		Name: "127.0.0.1:8093",
 	})
 }
 
@@ -110,6 +117,60 @@ func (b *BalancerTestSuite) startServer(addr string, weight int, svc UserService
 	// 6. 关闭服务注册
 	//err = b.cli.Close()
 	//assert.NoError(t, err)
+
+}
+
+// @func: TestClientFailOver
+// @date: 2024-01-21 02:35:47
+// @brief: 重试+负载均衡
+// @author: Kewin Li
+// @receiver b
+func (b *BalancerTestSuite) TestClientFailOver() {
+
+	Init()
+
+	t := b.T()
+	resolverEtcd, err := resolver.NewBuilder(b.cli)
+	assert.NoError(t, err)
+
+	// 一定要三个'/' !!!
+	cc, err := grpc.Dial("etcd:///service/user",
+		grpc.WithResolvers(resolverEtcd),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		// 选择gRPC内置负载均衡算法
+		grpc.WithDefaultServiceConfig(`
+{
+  "loadBalancingConfig": [{"round_robin": {}}],
+  "methodConfig": [
+    {
+      "name": [{"service":  "UserService"}],
+      "retryPolicy": {
+        "maxAttempts": 4,
+        "initialBackoff": "0.01s",
+        "maxBackoff": "0.1s",
+        "backoffMultiplier": 2.0,
+        "retryableStatusCodes": ["UNAVAILABLE"]
+      }
+    }
+  ]
+}
+`))
+
+	assert.NoError(t, err)
+
+	userClient := NewUserServiceClient(cc)
+
+	for {
+		id := rand.Int63n(100)
+		resp, err2 := userClient.GetById(context.Background(), &GetByIdRequest{
+			Id: id,
+		})
+
+		assert.NoError(t, err2)
+
+		fmt.Printf("rpc ret: %v \n", resp.User)
+		time.Sleep(time.Second * 2)
+	}
 
 }
 
