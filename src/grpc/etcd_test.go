@@ -50,7 +50,7 @@ func (e *EtcdTestSuite) TestServer() {
 	assert.NoError(t, err)
 
 	addr := "localhost:8090"
-	key := "service/user/" + addr
+	key := "service/interactive/" + addr
 	err = em.AddEndpoint(ctx, key, endpoints.Endpoint{
 
 		Addr: addr, // 定位信息

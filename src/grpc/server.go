@@ -7,6 +7,7 @@ import (
 
 type Server struct {
 	UnimplementedUserServiceServer
+	Name string
 }
 
 func (s *Server) GetById(ctx context.Context, request *GetByIdRequest) (*GetByIdResponse, error) {
@@ -15,7 +16,7 @@ func (s *Server) GetById(ctx context.Context, request *GetByIdRequest) (*GetById
 	return &GetByIdResponse{
 		User: &User{
 			Id:    666,
-			Name:  "ljk",
+			Name:  "ljk from" + s.Name,
 			Addrs: "hangzhou",
 		},
 	}, nil
