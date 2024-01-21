@@ -25,6 +25,10 @@ service UserService {
   rpc GetById(GetByIdRequest) returns(GetByIdResponse);
 }
 
+service VIPUserService {
+  rpc GetById(GetByIdRequest) returns(GetByIdResponse);
+}
+
 message GetByIdRequest {
   int64 id = 1;
 }
